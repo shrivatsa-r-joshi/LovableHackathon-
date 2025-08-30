@@ -61,5 +61,3 @@ export default function PromoteAdminPage() {
     </main>
   )
 }
-
-// this is 

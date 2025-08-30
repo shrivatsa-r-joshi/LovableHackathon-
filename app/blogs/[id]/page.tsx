@@ -12,11 +12,11 @@ export default function BlogDetail() {
 
   useEffect(() => {
     let mounted = true
-    fetch(`/api/blogs/${id}`)
+    fetch(`http://localhost:8080/api/blogs/${id}`)
       .then((r) => r.json())
       .then((d) => {
         if (mounted) {
-          setData(d.blog)
+          setData(d)
           setLoading(false)
         }
       })
@@ -26,10 +26,10 @@ export default function BlogDetail() {
   }, [id])
 
   async function toggleLike() {
-    const res = await fetch(`/api/blogs/${id}/like`, { method: "POST" })
+    const res = await fetch(`http://localhost:8080/api/blogs/${id}/like`, { method: "POST" })
     const d = await res.json()
     setLiked(d.liked)
-    setData((prev: any) => (prev ? { ...prev, likesCount: prev.likesCount + (d.liked ? 1 : -1) } : prev))
+    setData((prev: any) => (prev ? { ...prev, likesCount: d.likesCount } : prev))
   }
 
   return (
@@ -44,7 +44,7 @@ export default function BlogDetail() {
             <div className="text-sm text-neutral-600 mb-4">{data.likesCount} likes</div>
             <div className="w-full aspect-video bg-neutral-200 rounded-md mb-4" aria-hidden />
             <article className="prose max-w-none bg-white border rounded-md p-4">
-              <pre className="whitespace-pre-wrap text-sm">{data.contentMarkdown}</pre>
+              <pre className="whitespace-pre-wrap text-sm">{data.content}</pre>
             </article>
             <button onClick={toggleLike} className="mt-4 px-4 py-2 rounded-md bg-black text-white">
               {liked === null ? "Like / Unlike" : liked ? "Unlike" : "Like"}
